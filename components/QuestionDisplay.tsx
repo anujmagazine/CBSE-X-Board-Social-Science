@@ -21,6 +21,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ chapter, questions, o
       qText += `PROBABILITY: ${q.probability}%\n`;
       if (q.context) qText += `CONTEXT: ${q.context}\n`;
       qText += `QUESTION: ${q.text}\n`;
+      if (q.options && q.options.length > 0) {
+        qText += `OPTIONS:\n${q.options.map((opt, idx) => `   ${String.fromCharCode(65 + idx)}) ${opt}`).join('\n')}\n`;
+      }
       qText += `EXAMINER INSIGHT: ${q.insight}\n`;
       if (q.answer) qText += `MODEL ANSWER:\n${q.answer}\n`;
       return qText + `\n------------------------------------------\n`;
@@ -31,7 +34,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ chapter, questions, o
   const handleCopyText = () => {
     const content = getFormattedContent();
     navigator.clipboard.writeText(content);
-    alert("Copied to clipboard with Chapter Name!");
+    alert("Copied to clipboard with Chapter Name and Options!");
   };
 
   const handleDownloadTxt = () => {
@@ -59,6 +62,8 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ chapter, questions, o
       setIsGeneratingAnswers(false);
     }
   };
+
+  const optionLabels = ['A', 'B', 'C', 'D'];
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] flex flex-col">
@@ -102,6 +107,20 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({ chapter, questions, o
               <p className="text-xl md:text-2xl font-extrabold text-[#1e293b] leading-tight">
                 {q.text}
               </p>
+              
+              {/* MCQ Options Rendering */}
+              {q.type === 'MCQ' && q.options && q.options.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                  {q.options.map((opt, oIdx) => (
+                    <div key={oIdx} className="flex items-center gap-3 p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-100 transition-colors">
+                      <span className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center font-black text-slate-400 text-xs">
+                        {optionLabels[oIdx]}
+                      </span>
+                      <span className="text-slate-700 font-medium text-sm">{opt}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Insight (Bulb) */}

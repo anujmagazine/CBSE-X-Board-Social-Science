@@ -14,6 +14,7 @@ export interface Question {
   text: string;
   probability: number;
   insight: string;
+  options?: string[];
   context?: string;
   answer?: string;
 }
