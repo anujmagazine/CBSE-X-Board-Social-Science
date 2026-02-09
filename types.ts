@@ -1,6 +1,7 @@
 
 export type Subject = 'HISTORY' | 'GEOGRAPHY' | 'ECONOMICS' | 'CIVICS';
 
+// Added missing Chapter interface required by constants.tsx and other components
 export interface Chapter {
   id: string;
   name: string;
@@ -9,7 +10,7 @@ export interface Chapter {
 }
 
 export interface Question {
-  type: 'MCQ' | 'SHORT' | 'LONG' | 'CASE_BASED';
+  type: 'MCQ' | 'VSA' | 'SA' | 'LA' | 'CBQ' | 'MAP';
   marks: number;
   text: string;
   probability: number;
